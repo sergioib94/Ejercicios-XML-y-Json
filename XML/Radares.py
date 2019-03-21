@@ -2,6 +2,14 @@ def Listar (doc):
     lista = doc.xpath ('//NOMBRE/text()')
     return lista
 
+def Contar (doc):
+    radares = doc.xpath ('//CARRETERA/DENOMINACION/text()')
+    return len(radares)
+
+def Filtrar (prov,doc):
+    prov = doc.xpath ('//PROVINCIA[NOMBRE="%s"]/./CARRETERA/DENOMINACION/text()' %prov)
+    return (list(set(prov)))
+
 from lxml import etree
 doc = etree.parse ('Radares.xml')
 
@@ -19,3 +27,17 @@ while True:
     if opcion == "1":
         for provincias in Listar (doc):
             print ("*",provincias)
+
+    elif opcion == "2":
+        print ("contamos con: %d radares" %(Contar(doc)))
+
+    elif opcion == "3":
+        prov = input ("Introduce la provincia que quieras mirar: ")
+        for prov in Filtrar (prov,doc):
+            print ("*",prov)
+
+    elif opcion == "0":
+        break;
+
+    else:
+        print ("ERROR, esa opcion no existe")
