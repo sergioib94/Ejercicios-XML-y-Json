@@ -7,8 +7,15 @@ def Contar (doc):
     return len(radares)
 
 def Filtrar (prov,doc):
-    prov = doc.xpath ('//PROVINCIA[NOMBRE="%s"]/./CARRETERA/DENOMINACION/text()' %prov)
-    return (list(set(prov)))
+    via = doc.xpath ('//PROVINCIA[NOMBRE="%s"]/./CARRETERA/DENOMINACION/text()' %prov)
+    radar = int(doc.xpath ('count(//PROVINCIA[NOMBRE="%s"]/./CARRETERA/RADAR)' %prov))
+    repeticion = list(set(via)) #list set evita repeticiones en la lista 
+    filtro = [repeticion,radar]
+    return filtro
+
+def Buscar (calle,doc):
+    calle = doc.xpath ('//CARRETERA[DENOMINACION="%s"]/../..//PROVINCIA/NOMBRE/text()' %calle)
+    return calle
 
 from lxml import etree
 doc = etree.parse ('Radares.xml')
@@ -33,8 +40,14 @@ while True:
 
     elif opcion == "3":
         prov = input ("Introduce la provincia que quieras mirar: ")
-        for prov in Filtrar (prov,doc):
-            print ("*",prov)
+        for via in Filtrar (prov,doc)[0]:
+            print ("*",via)
+        print ("La provincia tiene", Filtrar (prov,doc)[1], "radares")
+
+    elif opcion == "4":
+        via = input ("Introduce la carretera que quieras mirar: ")
+        for via in Buscar (calle,doc):
+            print ("*",via)
 
     elif opcion == "0":
         break;
