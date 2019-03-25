@@ -9,13 +9,23 @@ def Contar (doc):
 def Filtrar (prov,doc):
     via = doc.xpath ('//PROVINCIA[NOMBRE="%s"]/./CARRETERA/DENOMINACION/text()' %prov)
     radar = int(doc.xpath ('count(//PROVINCIA[NOMBRE="%s"]/./CARRETERA/RADAR)' %prov))
-    repeticion = list(set(via)) #list set evita repeticiones en la lista 
+    repeticion = list(set(via)) #list set evita repeticiones en la lista
     filtro = [repeticion,radar]
     return filtro
 
-def Buscar (calle,doc):
-    calle = doc.xpath ('//CARRETERA[DENOMINACION="%s"]/../..//PROVINCIA/NOMBRE/text()' %calle)
-    return calle
+def Buscar (via,doc):
+    prov = doc.xpath ('//CARRETERA[DENOMINACION="%s"]/..//NOMBRE/text()' %via)
+    return prov
+
+def Localizar (via, doc):
+    cont = int(doc.xpath ('count(//CARRETERA[DENOMINACION="%s"]/RADAR)' %via))
+    latitud = doc.xpath('//CARRETERA[DENOMINACION="%s"]/RADAR/PUNTO_INICIAL/LATITUD/text()' %via)
+    longitud = doc.xpath('//CARRETERA[DENOMINACION="%s"]/RADAR/PUNTO_INICIAL/LONGITUD/text()' %via)
+
+    mapa = "http://www.openstreetmap.org/#map=20/%s/%s"%(latitud[0],longitud[0])
+
+    return mapa
+
 
 from lxml import etree
 doc = etree.parse ('Radares.xml')
@@ -46,8 +56,12 @@ while True:
 
     elif opcion == "4":
         via = input ("Introduce la carretera que quieras mirar: ")
-        for via in Buscar (calle,doc):
-            print ("*",via)
+        for prov in Buscar (via,doc):
+            print ("*",prov)
+
+    elif opcion == "5":
+        via = input("Dime el nombre de la carretera para obtener la localizacion de los radares: ")
+        print (Localizar(via,doc))
 
     elif opcion == "0":
         break;
