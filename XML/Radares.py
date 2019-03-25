@@ -15,7 +15,10 @@ def Filtrar (prov,doc):
 
 def Buscar (via,doc):
     prov = doc.xpath ('//CARRETERA[DENOMINACION="%s"]/..//NOMBRE/text()' %via)
-    return prov
+    radarI = doc.xpath ('//CARRETERA[DENOMINACION="%s"]/RADAR/PUNTO_INICIAL/PK/text()' %via)
+    radarF = doc.xpath ('//CARRETERA[DENOMINACION="%s"]/RADAR/PUNTO_FINAL/PK/text()' %via)
+    busqueda = [prov,radarI,radarF]
+    return busqueda
 
 def Localizar (via, doc):
     cont = int(doc.xpath ('count(//CARRETERA[DENOMINACION="%s"]/RADAR)' %via))
@@ -56,8 +59,10 @@ while True:
 
     elif opcion == "4":
         via = input ("Introduce la carretera que quieras mirar: ")
-        for prov in Buscar (via,doc):
+        for prov in Buscar (via,doc)[0]:
             print ("*",prov)
+        for radarI,radarF in zip (Buscar (via,doc)[1],Buscar (via,doc)[2]):
+            print (radarI,"-",radarF)
 
     elif opcion == "5":
         via = input("Dime el nombre de la carretera para obtener la localizacion de los radares: ")
