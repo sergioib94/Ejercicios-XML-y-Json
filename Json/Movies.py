@@ -14,9 +14,13 @@ def Contar(doc):
         print ("")
 
 def Filtrar (palabra1,palabra2,doc):
-
-
-
+    pelicula = []
+    for datos in doc:
+        if palabra1 and palabra2 in datos ["storyline"]:
+            pelicula.append (datos ["title"])
+        else:
+            print ("Esas palabras no se encuentran en ninguna sinopsis")
+        return pelicula
 with open("movies.json") as fichero:
     doc = json.load(fichero)
 
@@ -41,6 +45,7 @@ while True:
     if opcion == "3":
         palabra1 = input("palabra1: ")
         palabra2 = input("palabra2: ")
+        print ("Estas palabras aparecen en la sinopsis de %s" %(Filtrar(palabra1,palabra2,doc)))
 
     elif opcion == "0":
         break;
