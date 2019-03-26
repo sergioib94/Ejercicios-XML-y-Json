@@ -1,16 +1,20 @@
 import json
 
-def Listar(doc):
-    titulos = []
-    year = []
-    duracion = []
-    for nombre in doc ["title"]:
-        titulos.append (nombre)
-    for año in doc ["year"]:
-        year.append (año)
-    for tiempo in doc ["duration"]:
-        tiempo.append (tiempo)
-    return zip (titulos,year,tiempo)
+def Lista(doc):
+    for datos in doc:
+        print ("titulo:",datos ["title"],end="")
+        print (" -", datos ["year"],end="")
+        print (" -", datos ["duration"], " ",end="")
+        print ("")
+
+def Contar(doc):
+    for datos in doc:
+        print ("titulos:",datos ["title"])
+        print ("La pelicula tiene %d actores: " %(len(datos ["actors"])))
+        print ("")
+
+def Filtrar (palabra1,palabra2,doc):
+
 
 
 with open("movies.json") as fichero:
@@ -26,8 +30,17 @@ while True:
         0. Salir
         ''')
 
-        opcion = input("opcion: ")
+    opcion = input("opcion: ")
 
-        if opcion == "1":
-            for titulos ,year ,tiempo in Lista (doc):
-                print ("*",titulo,"-",year, "-",tiempo)
+    if opcion == "1":
+        Lista (doc)
+
+    if opcion == "2":
+        Contar(doc)
+
+    if opcion == "3":
+        palabra1 = input("palabra1: ")
+        palabra2 = input("palabra2: ")
+
+    elif opcion == "0":
+        break;
