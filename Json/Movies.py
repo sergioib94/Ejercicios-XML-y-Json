@@ -18,9 +18,16 @@ def Filtrar (palabra1,palabra2,doc):
     for datos in doc:
         if palabra1 and palabra2 in datos ["storyline"]:
             pelicula.append (datos ["title"])
-        else:
-            print ("Esas palabras no se encuentran en ninguna sinopsis")
-        return pelicula
+    return pelicula
+
+def Buscar (nombre,doc):
+    pelicula = []
+    for datos in doc:
+        for actor in datos ["actors"]:
+            if actor == nombre:
+                pelicula.append (datos["title"])
+    return pelicula
+
 with open("movies.json") as fichero:
     doc = json.load(fichero)
 
@@ -39,13 +46,18 @@ while True:
     if opcion == "1":
         Lista (doc)
 
-    if opcion == "2":
+    elif opcion == "2":
         Contar(doc)
 
-    if opcion == "3":
+    elif opcion == "3":
         palabra1 = input("palabra1: ")
         palabra2 = input("palabra2: ")
         print ("Estas palabras aparecen en la sinopsis de %s" %(Filtrar(palabra1,palabra2,doc)))
+
+    elif opcion == "4":
+        nombre = input("Nombre del actor: ")
+        for titulo in Buscar(nombre,doc):
+            print ("*",titulo)
 
     elif opcion == "0":
         break;
