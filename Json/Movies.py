@@ -52,7 +52,13 @@ while True:
     elif opcion == "3":
         palabra1 = input("palabra1: ")
         palabra2 = input("palabra2: ")
-        print ("Estas palabras aparecen en la sinopsis de %s" %(Filtrar(palabra1,palabra2,doc)))
+        if len(Filtrar(palabra1,palabra2,doc)) == 1:
+            print ("Estas palabras aparecen en la sinopsis de %s" %(Filtrar(palabra1,palabra2,doc)))
+        elif len(Filtrar(palabra1,palabra2,doc)) > 1:
+            print ("Estas palabras aparecen en:")
+            print ("*", Filtrar(palabra1,palabra2,doc))
+        else:
+            print ("Estas palabras no aparecen en ninguna sinopsis")
 
     elif opcion == "4":
         nombre = input("Nombre del actor: ")
